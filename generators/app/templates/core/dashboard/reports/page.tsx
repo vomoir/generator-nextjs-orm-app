@@ -9,8 +9,8 @@ const PDFViewer = dynamic(
   },
 );
 // import { PDFViewer } from '@react-pdf/renderer';
-import { lusitana } from '@/app/ui/fonts';
-import MyDocument from '@/app/ui/reports/report';
+import { lusitana } from '@/<%= srcPath %>/ui/fonts';
+import MyDocument from '@/<%= srcPath %>/ui/reports/report';
 
 // Check out the Metadata object on layout.tsx
 //  NOTE: You are attempting to export "metadata" from a component marked with "use client", which is disallowed

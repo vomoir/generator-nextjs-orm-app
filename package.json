@@ -19,7 +19,10 @@
     "create",
     "boilerplate"
   ],
-  "repository": "vomoir/generator-test-component",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vomoir/generator-test-component.git"
+  },
   "license": "ISC",
   "dependencies": {
     "yeoman-generator": "^7.3.2"
@@ -45,5 +48,10 @@
     "plugins": [
       "prettier"
     ]
-  }
+  },
+  "devDependencies": {},
+  "bugs": {
+    "url": "https://github.com/vomoir/generator-test-component/issues"
+  },
+  "homepage": "https://github.com/vomoir/generator-test-component#readme"
 }

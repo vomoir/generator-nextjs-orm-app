@@ -1,11 +1,11 @@
-import { lusitana } from '@/app/ui/fonts';
+import { lusitana } from '@/<%= srcPath %>/ui/fonts';
 import { Suspense } from 'react';
-import { fetchFilteredCustomers } from '@/app/lib/data';
+import { fetchFilteredCustomers } from '@/<%= srcPath %>/lib/data';
 import { Metadata } from 'next';
-import CustomersTable from '@/app/ui/customers/table';
-import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
-import Search from '@/app/ui/search';
-import Pagination from '@/app/ui/invoices/pagination';
+import CustomersTable from '@/<%= srcPath %>/ui/customers/table';
+import { InvoicesTableSkeleton } from '@/<%= srcPath %>/ui/skeletons';
+import Search from '@/<%= srcPath %>/ui/search';
+import Pagination from '@/<%= srcPath %>/ui/invoices/pagination';
 
 // Check out the Metadata object on layout.tsx
 export const metadata: Metadata = {
