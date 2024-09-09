@@ -1,6 +1,8 @@
 {
   "name": "generator-test-component",
   "version": "1.0.0",
+  "description": "generate a fully working nextjs app",
+  "author": "Tony Edwards",
   "main": "index.js",
   "type": "module",
   "module": "dist/react-lib.esm.js",
@@ -8,11 +10,40 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "yeoman-generator",
+    "yeoman",
+    "generator",
+    "inception",
+    "init",
+    "create",
+    "boilerplate"
+  ],
+  "repository": "vomoir/generator-test-component",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "yeoman-generator": "^7.3.2"
+  },
+  "eslintConfig": {
+    "extends": [
+      "xo-space/esnext",
+      "prettier"
+    ],
+    "env": {
+      "jest": true,
+      "node": true
+    },
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "singleQuote": true,
+          "printWidth": 90
+        }
+      ]
+    },
+    "plugins": [
+      "prettier"
+    ]
   }
 }
