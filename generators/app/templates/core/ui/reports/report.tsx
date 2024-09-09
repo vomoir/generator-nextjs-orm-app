@@ -9,7 +9,7 @@ import {
   Note,
 } from '@react-pdf/renderer';
 import CustomersTable from '../customers/table';
-import { fetchAllCustomers, fetchFilteredCustomers } from '@/app/lib/data';
+import { fetchAllCustomers, fetchFilteredCustomers } from '@/<%= srcPath %>/lib/data';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -84,7 +84,7 @@ const MyDocument = async () => {
                       styles.tableCell,
                       { width: '85%', textAlign: 'left', paddingRight: 8 },
                     ]}
-                  >                    
+                  >
                     <Image src={customer.image_url} />
                   </View>
                   <View style={styles.tableCell}>
