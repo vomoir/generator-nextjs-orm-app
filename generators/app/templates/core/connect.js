@@ -14,7 +14,7 @@ const db = new sqlite3.Database(
 
 // Serialize method ensures that database queries are executed sequentially
 db.serialize(() => {
-    // Create the items table if it doesn't exist
+    // Create the users table if it doesn't exist
     db.run(
         ` CREATE TABLE IF NOT EXISTS users (
             id	INTEGER NOT NULL UNIQUE,
@@ -29,14 +29,14 @@ db.serialize(() => {
             }
             console.log("Created 'users' table.");
 
-            // Clear the existing data in the products table
+            // Clear the existing data in the users table
             db.run(`DELETE FROM users`, (err) => {
                 if (err) {
                     return console.error(err.message);
                 }
                 console.log("All rows deleted from users");
 
-                // Insert new data into the products table
+                // Insert new data into the users table
                 const values1 = [
                     "Basil Brush",
                     "basil@brush.com",
@@ -94,6 +94,18 @@ db.serialize(() => {
                     console.log(`Rows inserted, ID ${id}`);
                 });
 
+                let createInvoices = 'CREATE TABLE invoices (id INTEGER NOT NULL, customer_id	INTEGER NOT NULL, amount REAL NOT NULL, status	TEXT NOT NULL, date	TEXT NOT NULL, 	PRIMARY KEY("id" AUTOINCREMENT));';
+                // db.run(createInvoices, function (err) {
+                //     return console.error(err.message);
+                // });
+
+                db.run(createInvoices, (err) => {
+                    if (err) {
+                        return console.error(err.message);
+                    }
+                    console.log("Created 'users' table.");
+                });
+
                 //   Close the database connection after all insertions are done
                 db.close((err) => {
                     if (err) {
@@ -101,7 +113,6 @@ db.serialize(() => {
                     }
                     console.log("Closed the database connection.");
                 });
-            });
-        }
-    );
+            })
+        })
 });

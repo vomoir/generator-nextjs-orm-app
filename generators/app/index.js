@@ -16,13 +16,20 @@ export default class extends Generator {
     try {
       githubUsername = await this.user.github.username();
       this.log(githubUsername);
-    } catch (e) {}
+    } catch (e) { }
 
     this.answers = await this.prompt([
       {
         type: "input",
         name: "componentName",
         message: "Your Component name",
+        default: this.appname, // Default to current folder name
+        store: true,
+      },
+      {
+        type: "input",
+        name: "appTitle",
+        message: "What is the title of your app? (will appear in headings etc)",
         default: this.appname, // Default to current folder name
         store: true,
       },
@@ -43,26 +50,19 @@ export default class extends Generator {
       {
         type: "confirm",
         name: "includeInstall",
-        message: "Install dependencies?",
+        message: "Install dependencies? (**will take some time**)",
         default: true,
       },
 
-      // {
-      //     type: 'input',
-      //     name: 'githubUsername',
-      //     message: 'GitHub username:',
-      //     default: githubUsername,
-      //     store: true
-      // },
     ]);
   }
 
   writing() {
-    const { componentName, assetsFolder, srcDir } = this.answers;
+    const { componentName, assetsFolder, srcDir, appTitle } = this.answers;
     this.log(`Assets folder: ${assetsFolder}`);
     this.destinationRoot(this.destinationPath(componentName));
-    let srcPath = "app";
 
+    let srcPath = "app";
     if (srcDir) {
       srcPath = "src/app";
     }
@@ -83,22 +83,35 @@ export default class extends Generator {
     );
 
     this.fs.copy(
-      this.templatePath("env/tsconfig.json"),
-      this.destinationPath("tsconfig.json")
-    );
-
-    this.fs.copy(
-      this.templatePath("env/tailwind.config.ts"),
-      this.destinationPath("tailwind.config.ts")
-    );
-
-    this.fs.copy(
       this.templatePath("env/prettier.config.js"),
       this.destinationPath("prettier.config.js")
     );
 
+    this.fs.copy(
+      this.templatePath("env/auth.config.ts"),
+      this.destinationPath("auth.config.ts")
+    );
+
     // Creates a file from scratch:
     this.fs.write(this.destinationPath("FRUNOBULAX.txt"), `# ${componentName}`);
+
+    this.fs.copyTpl(
+      this.templatePath("env/tsconfig.json"),
+      this.destinationPath("tsconfig.json"),
+      { srcPath: srcPath }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath("env/tailwind.config.ts"),
+      this.destinationPath("tailwind.config.ts"),
+      { srcPath: srcPath }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath("env/auth.ts"),
+      this.destinationPath("auth.ts"),
+      { srcPath: srcPath }
+    );
 
     this.fs.copyTpl(
       this.templatePath("Component.js"),
@@ -122,6 +135,14 @@ export default class extends Generator {
       { componentName: componentName }
     );
 
+    // this.fs.copyTpl(
+    //   this.templatePath("core/ui/auth.ts"),
+    //   this.answers.srcDir
+    //     ? this.destinationPath(`src/app/ui/auth.ts`)
+    //     : this.destinationPath(`app/ui/auth.ts`),
+    //   { appTitle: appTitle }
+    // );
+
     // Create the assets/public folder
     this.fs.copy(
       this.templatePath(`${assetsFolder}`),
@@ -135,7 +156,7 @@ export default class extends Generator {
       this.answers.srcDir
         ? this.destinationPath(`src/app`)
         : this.destinationPath(`app`),
-      { srcPath: srcPath }
+      { srcPath: srcPath, appTitle: appTitle }
     );
 
     // Replace name in package.json with selected project name

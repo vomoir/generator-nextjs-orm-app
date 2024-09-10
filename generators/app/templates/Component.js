@@ -1,5 +1,5 @@
 import React from "react";
-import AcmeLogo from '@/<%= srcPath %>/ui/acme-logo';
+import WebAppLogo from '@/<%= srcPath %>/ui/webapp-logo';
 import '@/<%= srcPath %>/ui/global.css';
 
 const <%= componentName %> = () => {
