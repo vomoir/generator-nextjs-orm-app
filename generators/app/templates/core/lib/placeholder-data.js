@@ -7,6 +7,11 @@ const users = [
     email: 'user@nextmail.com',
     password: '123456',
   },
+  {
+    name: 'Warren Deskjockey',
+    email: 'wazza@knobbery.com',
+    password: '123456',
+  },
 ];
 
 const customers = [
@@ -86,7 +91,7 @@ const invoices = [
     date: '2023-08-05',
   },
   {
-    customer_id: customers[7].id,
+    customer_id: customers[2].id,
     amount: 54246,
     status: 'pending',
     date: '2023-07-16',
