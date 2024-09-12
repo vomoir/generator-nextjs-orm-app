@@ -16,43 +16,43 @@ const users = [
 
 const customers = [
   {
-    id: '3958dc9e-712f-4377-85e9-fec4b6a6442a',
+    id: 1,
     name: 'Basil Brush',
     email: 'basil@brush.com',
     image_url: '/customers/basilbrush.jpg',
   },
   {
-    id: '3958dc9e-742f-4377-85e9-fec4b6a6442a',
+    id: 2,
     name: 'Bobby Hawke',
     email: 'bob@hawke.com',
     image_url: '/customers/bobhawke.jpg',
   },
   {
-    id: '3958dc9e-737f-4377-85e9-fec4b6a6442a',
+    id: 3,
     name: 'Eddie Barton',
     email: 'eddie@barton.com',
     image_url: '/customers/edbarton.jpg',
   },
   {
-    id: '50ca3e18-62cd-11ee-8c99-0242ac120002',
+    id: 4,
     name: 'Jaco Pastorius',
     email: 'jaco@virtuosobass.com',
     image_url: '/customers/jaco.jpg',
   },
   {
-    id: '3958dc9e-787f-4377-85e9-fec4b6a6442a',
+    id: 5,
     name: 'Victoria Battenburg',
     email: 'vic@battenburg.com',
     image_url: '/customers/queenvic.jpg',
   },
   {
-    id: '76d65c26-f784-44a2-ac19-586678f7c2f2',
+    id: 6,
     name: 'Dick The Third',
     email: 'dick@third.com',
     image_url: '/customers/richard111.jpg',
   },
   {
-    id: 'd6e15727-9fe1-4961-8c5b-ea44a9bd81aa',
+    id: '7',
     name: 'Evil Rabbit',
     email: 'evil@rabbit.com',
     image_url: '/customers/evil-rabbit.png',

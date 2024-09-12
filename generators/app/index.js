@@ -53,7 +53,6 @@ export default class extends Generator {
         message: "Install dependencies? (**will take some time**)",
         default: true,
       },
-
     ]);
   }
 
@@ -92,8 +91,18 @@ export default class extends Generator {
       this.destinationPath("auth.config.ts")
     );
 
+    this.fs.copy(
+      this.templatePath("env/connect.js"),
+      this.destinationPath("connect.js")
+    );
+
+    this.fs.copy(
+      this.templatePath("env/placeholder-data.js"),
+      this.destinationPath("placeholder-data.js")
+    );
+
     // Creates a file from scratch:
-    this.fs.write(this.destinationPath("FRUNOBULAX.txt"), `# ${componentName}`);
+    // this.fs.write(this.destinationPath("FRUNOBULAX.txt"), `# ${componentName}`);
 
     this.fs.copyTpl(
       this.templatePath("env/tsconfig.json"),
@@ -135,14 +144,6 @@ export default class extends Generator {
       { componentName: componentName }
     );
 
-    // this.fs.copyTpl(
-    //   this.templatePath("core/ui/auth.ts"),
-    //   this.answers.srcDir
-    //     ? this.destinationPath(`src/app/ui/auth.ts`)
-    //     : this.destinationPath(`app/ui/auth.ts`),
-    //   { appTitle: appTitle }
-    // );
-
     // Create the assets/public folder
     this.fs.copy(
       this.templatePath(`${assetsFolder}`),
@@ -150,7 +151,7 @@ export default class extends Generator {
     );
 
     //   Copy over the bulk of the application files,
-    //   substituting the src/app or /app path depending on the choice.
+    //   substituting the src/app or /app path depending on the choice and the app's title.
     this.fs.copyTpl(
       this.templatePath("core/**/*"),
       this.answers.srcDir
@@ -167,18 +168,25 @@ export default class extends Generator {
   //  Initialise the node dependencies
   install() {
     if (this.answers.includeInstall) {
+      console.log("Installing dependencies, please wait...");
       this.spawnSync("npm", ["install"]);
     }
   }
 
   end() {
     this.log("******************************************");
-    this.log(`Run the project: cd ${this.answers.componentName} then...`);
-
-    this.log(` 'npm run dev'`);
+    this.log(`Run the project:`);
+    this.log(`    cd ${this.answers.componentName}`);
+    this.log(`then...`);
+    this.log(`    'npm run dev'`);
+    let srcPath = this.answers.srcDir
+      ? `src/app` : `app`;
 
     this.log(
-      `Seed the SQLite db: cd ${this.answers.componentName}/app then 'node connect.js'`
+      `To seed the SQLite db:`
+    );
+    this.log(
+      `         cd ${this.answers.componentName} then 'node connect.js'`
     );
     this.log("******************************************");
   }
