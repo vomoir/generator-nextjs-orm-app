@@ -1,28 +1,21 @@
 import Generator from "yeoman-generator";
-// import { glob, globSync, globStream, globStreamSync, Glob } from "glob";
 
 export default class extends Generator {
   initializing() {
-    var today = new Date();
-    this.log(`It's working! ${today}`);
+
   }
 
   welcome() {
-    this.log("Welcome! Muahahaha!");
+    this.log(`N E X T J S  P R O J E C T`);
+    this.log("Welcome!");
   }
 
   async prompting() {
-    let githubUsername;
-    try {
-      githubUsername = await this.user.github.username();
-      this.log(githubUsername);
-    } catch (e) { }
-
     this.answers = await this.prompt([
       {
         type: "input",
-        name: "componentName",
-        message: "Your Component name",
+        name: "nextJsAppNAme",
+        message: "Your Simple Authorisation Project name",
         default: this.appname, // Default to current folder name
         store: true,
       },
@@ -35,20 +28,6 @@ export default class extends Generator {
       },
       {
         type: "confirm",
-        name: "srcDir",
-        message: "Use a 'src' folder?",
-        default: false,
-        sore: true,
-      },
-      {
-        type: "input",
-        name: "assetsFolder",
-        message: "Folder name for application assets (e.g., images)",
-        default: "public", // Default folder name for assets
-        store: true,
-      },
-      {
-        type: "confirm",
         name: "includeInstall",
         message: "Install dependencies? (**will take some time**)",
         default: true,
@@ -57,18 +36,24 @@ export default class extends Generator {
   }
 
   writing() {
-    const { componentName, assetsFolder, srcDir, appTitle } = this.answers;
-    this.log(`Assets folder: ${assetsFolder}`);
-    this.destinationRoot(this.destinationPath(componentName));
+    const { nextJsAppNAme, srcDir, appTitle } = this.answers;
+    this.destinationRoot(this.destinationPath(nextJsAppNAme));
 
     let srcPath = "app";
-    if (srcDir) {
-      srcPath = "src/app";
-    }
+
+    this.fs.copy(
+      this.templatePath("env/next.config.mjs"),
+      this.destinationPath("next.config.mjs")
+    );
 
     this.fs.copy(
       this.templatePath("env/gitignore"),
       this.destinationPath(".gitignore")
+    );
+
+    this.fs.copy(
+      this.templatePath("env/globals.css"),
+      this.destinationPath("globals.css")
     );
 
     this.fs.copy(
@@ -87,53 +72,33 @@ export default class extends Generator {
     );
 
     this.fs.copy(
-      this.templatePath("env/auth.config.ts"),
-      this.destinationPath("auth.config.ts")
-    );
-
-    this.fs.copy(
-      this.templatePath("env/connect.js"),
-      this.destinationPath("connect.js")
-    );
-
-    this.fs.copy(
-      this.templatePath("env/placeholder-data.js"),
-      this.destinationPath("placeholder-data.js")
-    );
-
-    // Creates a file from scratch:
-    // this.fs.write(this.destinationPath("FRUNOBULAX.txt"), `# ${componentName}`);
-
-    this.fs.copyTpl(
       this.templatePath("env/tsconfig.json"),
-      this.destinationPath("tsconfig.json"),
-      { srcPath: srcPath }
+      this.destinationPath("tsconfig.json")
     );
 
-    this.fs.copyTpl(
+    this.fs.copy(
       this.templatePath("env/tailwind.config.ts"),
-      this.destinationPath("tailwind.config.ts"),
-      { srcPath: srcPath }
+      this.destinationPath("tailwind.config.ts")
     );
 
-    this.fs.copyTpl(
-      this.templatePath("env/auth.ts"),
-      this.destinationPath("auth.ts"),
-      { srcPath: srcPath }
+    this.fs.copy(
+      this.templatePath("env/drizzle.config.ts"),
+      this.destinationPath("drizzle.config.ts")
     );
 
-    this.fs.copyTpl(
-      this.templatePath("Component.js"),
-      this.destinationPath(`src/components/${componentName}.js`),
-      { componentName: componentName, srcPath: srcPath }
+    this.fs.copy(
+      this.templatePath("env/env"),
+      this.destinationPath(".env")
     );
 
-    this.fs.copyTpl(
+    this.log("copied env folder")
+
+    this.fs.copy(
       this.templatePath("package.json"),
       this.destinationPath("package.json")
     );
 
-    this.fs.copyTpl(
+    this.fs.copy(
       this.templatePath("postcss.config.js"),
       this.destinationPath("postcss.config.js")
     );
@@ -141,28 +106,60 @@ export default class extends Generator {
     this.fs.copyTpl(
       this.templatePath("README.md"),
       this.destinationPath("README.md"),
-      { componentName: componentName }
-    );
-
-    // Create the assets/public folder
-    this.fs.copy(
-      this.templatePath(`${assetsFolder}`),
-      this.destinationPath(`${assetsFolder}`)
+      { nextJsAppNAme: nextJsAppNAme }
     );
 
     //   Copy over the bulk of the application files,
     //   substituting the src/app or /app path depending on the choice and the app's title.
+
     this.fs.copyTpl(
-      this.templatePath("core/**/*"),
-      this.answers.srcDir
-        ? this.destinationPath(`src/app`)
-        : this.destinationPath(`app`),
-      { srcPath: srcPath, appTitle: appTitle }
+      this.templatePath("app/**/*"),
+      this.destinationPath('app'),
+      { appTitle: appTitle }
+    );
+
+    this.log("copying components folders...");
+
+    this.fs.copyTpl(
+      this.templatePath("components/**/*"),
+      this.destinationPath('components'),
+      { appTitle: appTitle }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath("drizzle/**/*"),
+      this.destinationPath('drizzle'),
+      { appTitle: appTitle }
+    );
+
+
+    this.fs.copyTpl(
+      this.templatePath("lib/**/*"),
+      this.destinationPath('lib'),
+      { appTitle: appTitle }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath("public/**/*"),
+      this.destinationPath('public'),
+      { appTitle: appTitle }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath("types/**/*"),
+      this.destinationPath('types'),
+      { appTitle: appTitle }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath("styles/**/*"),
+      this.destinationPath('styles'),
+      { appTitle: appTitle }
     );
 
     // Replace name in package.json with selected project name
     const packageJson = this.fs.readJSON(this.destinationPath("package.json"));
-    packageJson.name = "@vomsoft/" + componentName;
+    packageJson.name = "@vomsoft/" + nextJsAppNAme;
     this.fs.writeJSON(this.destinationPath("package.json"), packageJson);
   }
   //  Initialise the node dependencies
@@ -170,24 +167,29 @@ export default class extends Generator {
     if (this.answers.includeInstall) {
       console.log("Installing dependencies, please wait...");
       this.spawnSync("npm", ["install"]);
+
+      this.log("...installing drizzle orm...");
+
+      const cmdLine = `npm i drizzle-orm better-sqlite3`;
+      childProcessExec(cmdLine);
+
+      // this.spawnSync("npm", ["i drizzle-orm@latest"])
+      // this.log("...installing drizzle kit...");
+      // this.spawnSync("npm", ["install, better-sqlite3"])
+      this.spawnSync("npx drizzle-kit generate");
+      this.spawnSync("npx drizzle-kit push");
     }
   }
 
   end() {
     this.log("******************************************");
     this.log(`Run the project:`);
-    this.log(`    cd ${this.answers.componentName}`);
+    this.log(`    cd ${this.answers.nextJsAppNAme}`);
     this.log(`then...`);
     this.log(`    'npm run dev'`);
     let srcPath = this.answers.srcDir
       ? `src/app` : `app`;
 
-    this.log(
-      `To seed the SQLite db:`
-    );
-    this.log(
-      `         cd ${this.answers.componentName} then 'node connect.js'`
-    );
     this.log("******************************************");
   }
 }

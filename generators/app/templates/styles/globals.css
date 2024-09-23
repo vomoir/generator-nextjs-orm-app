@@ -1,0 +1,16 @@
+/* styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Your custom global styles here */
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+/* styles/variables.css */
+:root {
+    --primary-color: #3490dc;
+    --secondary-color: #ffed4a;
+    --text-color: #333333;
+}

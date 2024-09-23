@@ -1,7 +1,7 @@
 {
-  "name": "generator-test-component",
+  "name": "generator-nextjs-structure",
   "version": "1.0.0",
-  "description": "generate a fully working nextjs app",
+  "description": "scaffold a nicely organised nextjs app",
   "author": "Tony Edwards",
   "main": "index.js",
   "type": "module",
@@ -51,7 +51,7 @@
   },
   "devDependencies": {},
   "bugs": {
-    "url": "https://github.com/vomoir/generator-test-component/issues"
+    "url": "https://github.com/vomoir/generator-nextjs-structure/issues"
   },
-  "homepage": "https://github.com/vomoir/generator-test-component#readme"
+  "homepage": "https://github.com/vomoir/generator-nextjs-structure/#readme"
 }
