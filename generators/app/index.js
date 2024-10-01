@@ -171,8 +171,6 @@ export default class extends Generator {
       this.log("...installing drizzle orm...");
 
       const cmdLine = `npm i drizzle-orm better-sqlite3`;
-      childProcessExec(cmdLine);
-
       // this.spawnSync("npm", ["i drizzle-orm@latest"])
       // this.log("...installing drizzle kit...");
       // this.spawnSync("npm", ["install, better-sqlite3"])
