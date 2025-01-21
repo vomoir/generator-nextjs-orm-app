@@ -1,14 +1,13 @@
-import { Config } from "drizzle-kit";
-import process from 'node:process';
+import { Config } from 'drizzle-kit';
 
-process.loadEnvFile();
+const databaseUrl = './db.sqlite';
 
 export default {
-  schema: "./lib/schema.ts",
-  out: "./drizzle",
-  dialect: "sqlite",
+  schema: './lib/schema.ts',
+  out: './drizzle',
+  dialect: 'sqlite',
   dbCredentials: {
-    url: process.env.DB_URL!,
+    url: databaseUrl,
   },
   verbose: true,
   strict: true,

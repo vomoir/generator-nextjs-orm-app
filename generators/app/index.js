@@ -1,9 +1,7 @@
 import Generator from "yeoman-generator";
 
 export default class extends Generator {
-  initializing() {
-
-  }
+  initializing() {}
 
   welcome() {
     this.log(`N E X T J S  P R O J E C T`);
@@ -14,7 +12,7 @@ export default class extends Generator {
     this.answers = await this.prompt([
       {
         type: "input",
-        name: "nextJsAppNAme",
+        name: "fullNextJsAppName",
         message: "Your Simple Authorisation Project name",
         default: this.appname, // Default to current folder name
         store: true,
@@ -36,65 +34,43 @@ export default class extends Generator {
   }
 
   writing() {
-    const { nextJsAppNAme, srcDir, appTitle } = this.answers;
-    this.destinationRoot(this.destinationPath(nextJsAppNAme));
+    const { fullNextJsAppName, srcDir, appTitle } = this.answers;
+
+    //  Make sure there's no spaces in application name (and lowercase)
+    const nextJsAppName = fullNextJsAppName.replace(/\s+/g, "_").toLowerCase();
+
+    this.destinationRoot(this.destinationPath(nextJsAppName));
 
     let srcPath = "app";
 
-    this.fs.copy(
-      this.templatePath("env/next.config.mjs"),
-      this.destinationPath("next.config.mjs")
-    );
+    //  Copy files in 'env' folder that don't need renaming
+    this.fs.copy(this.templatePath("env/*"), this.destinationPath(""));
 
+    //  Copy individual config files that need a '.' prepended to their name
     this.fs.copy(
-      this.templatePath("env/gitignore"),
+      this.templatePath("env/dotconfigfiles/gitignore"),
       this.destinationPath(".gitignore")
     );
 
     this.fs.copy(
-      this.templatePath("env/globals.css"),
-      this.destinationPath("globals.css")
-    );
-
-    this.fs.copy(
-      this.templatePath("env/editorconfig"),
+      this.templatePath("env/dotconfigfiles/editorconfig"),
       this.destinationPath(".editorconfig")
     );
 
     this.fs.copy(
-      this.templatePath("env/eslintignore"),
+      this.templatePath("env/dotconfigfiles/eslintignore"),
       this.destinationPath(".eslintignore")
     );
 
     this.fs.copy(
-      this.templatePath("env/prettier.config.js"),
-      this.destinationPath("prettier.config.js")
-    );
-
-    this.fs.copy(
-      this.templatePath("env/tsconfig.json"),
-      this.destinationPath("tsconfig.json")
-    );
-
-    this.fs.copy(
-      this.templatePath("env/tailwind.config.ts"),
-      this.destinationPath("tailwind.config.ts")
-    );
-
-    this.fs.copy(
-      this.templatePath("env/drizzle.config.ts"),
-      this.destinationPath("drizzle.config.ts")
-    );
-
-    this.fs.copy(
-      this.templatePath("env/env"),
+      this.templatePath("env/dotconfigfiles/env"),
       this.destinationPath(".env")
     );
 
-    this.log("copied env folder")
+    this.log("copied env folder");
 
     this.fs.copy(
-      this.templatePath("package.json"),
+      this.templatePath("template_package.json"),
       this.destinationPath("package.json")
     );
 
@@ -106,7 +82,7 @@ export default class extends Generator {
     this.fs.copyTpl(
       this.templatePath("README.md"),
       this.destinationPath("README.md"),
-      { nextJsAppNAme: nextJsAppNAme }
+      { nextJsAppName }
     );
 
     //   Copy over the bulk of the application files,
@@ -114,7 +90,7 @@ export default class extends Generator {
 
     this.fs.copyTpl(
       this.templatePath("app/**/*"),
-      this.destinationPath('app'),
+      this.destinationPath("app"),
       { appTitle: appTitle }
     );
 
@@ -122,58 +98,71 @@ export default class extends Generator {
 
     this.fs.copyTpl(
       this.templatePath("components/**/*"),
-      this.destinationPath('components'),
+      this.destinationPath("components"),
       { appTitle: appTitle }
     );
+
+    this.log("copying drizzle config folders...");
 
     this.fs.copyTpl(
       this.templatePath("drizzle/**/*"),
-      this.destinationPath('drizzle'),
+      this.destinationPath("drizzle"),
       { appTitle: appTitle }
     );
 
-
     this.fs.copyTpl(
       this.templatePath("lib/**/*"),
-      this.destinationPath('lib'),
+      this.destinationPath("lib"),
       { appTitle: appTitle }
     );
 
     this.fs.copyTpl(
       this.templatePath("public/**/*"),
-      this.destinationPath('public'),
+      this.destinationPath("public"),
       { appTitle: appTitle }
     );
 
     this.fs.copyTpl(
       this.templatePath("types/**/*"),
-      this.destinationPath('types'),
+      this.destinationPath("types"),
       { appTitle: appTitle }
     );
 
     this.fs.copyTpl(
       this.templatePath("styles/**/*"),
-      this.destinationPath('styles'),
+      this.destinationPath("styles"),
       { appTitle: appTitle }
     );
 
-    // Replace name in package.json with selected project name
+    // Adding specific depenmdencies to package.json:
+    this.log("adding dependencies to package.json...");
+    // drizzle kit needs to be this version (0.22.8) as the drizzle-kit push command fails on later versions (known bug)
+    const pkgJson = {
+      devDependencies: {
+        "drizzle-kit": "0.22.8",
+      },
+      dependencies: {
+        react: "^18.2.0",
+      },
+    };
+
+    // Extend or create package.json file in destination path
+    this.fs.extendJSON(this.destinationPath("package.json"), pkgJson);
+
+    this.log("Replacing name in package.json with selected project name...");
+
     const packageJson = this.fs.readJSON(this.destinationPath("package.json"));
-    packageJson.name = "@vomsoft/" + nextJsAppNAme;
+    packageJson.name = "@vomsoft/" + nextJsAppName;
     this.fs.writeJSON(this.destinationPath("package.json"), packageJson);
   }
+
   //  Initialise the node dependencies
   install() {
     if (this.answers.includeInstall) {
       console.log("Installing dependencies, please wait...");
       this.spawnSync("npm", ["install"]);
 
-      this.log("...installing drizzle orm...");
-
-      const cmdLine = `npm i drizzle-orm better-sqlite3`;
-      // this.spawnSync("npm", ["i drizzle-orm@latest"])
-      // this.log("...installing drizzle kit...");
-      // this.spawnSync("npm", ["install, better-sqlite3"])
+      this.log("...initialising db using drizzle kit...");
       this.spawnSync("npx drizzle-kit generate");
       this.spawnSync("npx drizzle-kit push");
     }
@@ -182,12 +171,9 @@ export default class extends Generator {
   end() {
     this.log("******************************************");
     this.log(`Run the project:`);
-    this.log(`    cd ${this.answers.nextJsAppNAme}`);
+    this.log(`    cd ${this.answers.fullNextJsAppName}`);
     this.log(`then...`);
     this.log(`    'npm run dev'`);
-    let srcPath = this.answers.srcDir
-      ? `src/app` : `app`;
-
     this.log("******************************************");
   }
 }
