@@ -1,1 +1,0 @@
-generated drizzle sql goes in this folder

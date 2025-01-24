@@ -4,7 +4,7 @@ export default class extends Generator {
   initializing() {}
 
   welcome() {
-    this.log(`N E X T J S  P R O J E C T`);
+    this.log(`N E X T J S ORM  P R O J E C T`);
     this.log("Welcome!");
   }
 
@@ -13,28 +13,36 @@ export default class extends Generator {
       {
         type: "input",
         name: "fullNextJsAppName",
-        message: "Your Simple Authorisation Project name",
+        message: "Your Simple NextJs ORM Project name:",
         default: this.appname, // Default to current folder name
         store: true,
       },
       {
         type: "input",
         name: "appTitle",
-        message: "What is the title of your app? (will appear in headings etc)",
-        default: this.appname, // Default to current folder name
+        message:
+          "What is the title of your app? (will appear in headings etc):",
+        default: this.fullNextJsAppName ? this.fullNextJsAppName : this.appname, // Default to current folder name
+        store: true,
+      },
+      {
+        type: "confirm",
+        name: "useSrcDir",
+        message: "Use a 'src' folder?",
+        default: false,
         store: true,
       },
       {
         type: "confirm",
         name: "includeInstall",
-        message: "Install dependencies? (**will take some time**)",
+        message: "Install dependencies? (**will take some time**):",
         default: true,
       },
     ]);
   }
 
   writing() {
-    const { fullNextJsAppName, srcDir, appTitle } = this.answers;
+    const { fullNextJsAppName, useSrcDir, appTitle } = this.answers;
 
     //  Make sure there's no spaces in application name (and lowercase)
     const nextJsAppName = fullNextJsAppName.replace(/\s+/g, "_").toLowerCase();
@@ -42,32 +50,39 @@ export default class extends Generator {
     this.destinationRoot(this.destinationPath(nextJsAppName));
 
     let srcPath = "app";
+    if (useSrcDir) {
+      srcPath = "src/app";
+    }
 
     //  Copy files in 'env' folder that don't need renaming
-    this.fs.copy(this.templatePath("env/*"), this.destinationPath(""));
+    this.fs.copyTpl(
+      this.templatePath("environment/*"),
+      this.destinationPath(""),
+      { srcPath: srcPath, appTitle: appTitle }
+    );
 
     //  Copy individual config files that need a '.' prepended to their name
     this.fs.copy(
-      this.templatePath("env/dotconfigfiles/gitignore"),
+      this.templatePath("environment/dotconfigfiles/gitignore"),
       this.destinationPath(".gitignore")
     );
 
     this.fs.copy(
-      this.templatePath("env/dotconfigfiles/editorconfig"),
+      this.templatePath("environment/dotconfigfiles/editorconfig"),
       this.destinationPath(".editorconfig")
     );
 
     this.fs.copy(
-      this.templatePath("env/dotconfigfiles/eslintignore"),
+      this.templatePath("environment/dotconfigfiles/eslintignore"),
       this.destinationPath(".eslintignore")
     );
 
     this.fs.copy(
-      this.templatePath("env/dotconfigfiles/env"),
+      this.templatePath("environment/dotconfigfiles/env"),
       this.destinationPath(".env")
     );
 
-    this.log("copied env folder");
+    this.log("***copied environment folder");
 
     this.fs.copy(
       this.templatePath("template_package.json"),
@@ -85,52 +100,61 @@ export default class extends Generator {
       { nextJsAppName }
     );
 
+    this.log("*****************************");
+    this.log(`srcPath = ${srcPath}`);
+    this.log("*****************************");
+
+    this.fs.copyTpl(
+      this.templatePath("environment/tsconfig.json"),
+      this.destinationPath("tsconfig.json"),
+      {
+        srcPath: srcPath,
+        appTitle: appTitle,
+      }
+    );
+
     //   Copy over the bulk of the application files,
     //   substituting the src/app or /app path depending on the choice and the app's title.
 
     this.fs.copyTpl(
-      this.templatePath("app/**/*"),
-      this.destinationPath("app"),
-      { appTitle: appTitle }
+      this.templatePath("core/**/*"),
+      this.answers.useSrcDir
+        ? this.destinationPath(`src/app`)
+        : this.destinationPath(`app`),
+      { srcPath: srcPath, appTitle: appTitle }
     );
 
-    this.log("copying components folders...");
+    this.log("***copying components folders...");
 
     this.fs.copyTpl(
-      this.templatePath("components/**/*"),
+      this.templatePath("core/components/**/*"),
       this.destinationPath("components"),
       { appTitle: appTitle }
     );
 
-    this.log("copying drizzle config folders...");
+    this.log("***copying drizzle/db config folders...");
 
     this.fs.copyTpl(
-      this.templatePath("drizzle/**/*"),
-      this.destinationPath("drizzle"),
-      { appTitle: appTitle }
+      this.templatePath("core/db/**/*"),
+      this.destinationPath("db"),
+      {
+        srcPath: srcPath,
+        appTitle: appTitle,
+      }
     );
 
     this.fs.copyTpl(
-      this.templatePath("lib/**/*"),
-      this.destinationPath("lib"),
-      { appTitle: appTitle }
+      this.templatePath("core/drizzleconfig/drizzle.config.ts"),
+      this.destinationPath("drizzle.config.ts"),
+      {
+        srcPath: srcPath,
+        appTitle: appTitle,
+      }
     );
 
     this.fs.copyTpl(
       this.templatePath("public/**/*"),
       this.destinationPath("public"),
-      { appTitle: appTitle }
-    );
-
-    this.fs.copyTpl(
-      this.templatePath("types/**/*"),
-      this.destinationPath("types"),
-      { appTitle: appTitle }
-    );
-
-    this.fs.copyTpl(
-      this.templatePath("styles/**/*"),
-      this.destinationPath("styles"),
       { appTitle: appTitle }
     );
 
@@ -164,7 +188,7 @@ export default class extends Generator {
 
       this.log("...initialising db using drizzle kit...");
       this.spawnSync("npx drizzle-kit generate");
-      this.spawnSync("npx drizzle-kit push");
+      this.spawnSync("npx drizzle-kit migrate");
     }
   }
 
