@@ -19,12 +19,11 @@
     "create",
     "boilerplate"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vomoir/generator-test-component.git"
-  },
+  "repository": "github:vomoir/generator-test-component.git",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^4.0.0",
+    "yosay": "^2.0.2",
     "yeoman-generator": "^7.3.2"
   },
   "eslintConfig": {

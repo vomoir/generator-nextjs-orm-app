@@ -1,14 +1,28 @@
 import Generator from "yeoman-generator";
+import chalk from "chalk";
+import yosay from "yosay";
 
 export default class extends Generator {
   initializing() {}
 
   welcome() {
-    this.log(`N E X T J S ORM  P R O J E C T`);
-    this.log("Welcome!");
+    this.log("N E X T J S ORM  P R O J E C T");
   }
 
   async prompting() {
+    let msgText =
+      "This generator will scaffold a functioning NextJS ORM project for you.\n\n";
+    msgText +=
+      "It will create a new folder with the name you specify, and populate it with the necessary files.\n";
+    msgText +=
+      "It will also install the necessary dependencies and initialise the database using drizzle-kit.";
+    this.log(
+      yosay(
+        chalk.red.bold("Welcome to the NextJS ORM Project generator!\n\n") +
+          chalk.whiteBright(msgText)
+      )
+    );
+
     this.answers = await this.prompt([
       {
         type: "input",
@@ -100,10 +114,6 @@ export default class extends Generator {
       { nextJsAppName }
     );
 
-    this.log("*****************************");
-    this.log(`srcPath = ${srcPath}`);
-    this.log("*****************************");
-
     this.fs.copyTpl(
       this.templatePath("environment/tsconfig.json"),
       this.destinationPath("tsconfig.json"),
@@ -158,12 +168,12 @@ export default class extends Generator {
       { appTitle: appTitle }
     );
 
-    // Adding specific depenmdencies to package.json:
+    // Adding specific dependencies to package.json:
     this.log("adding dependencies to package.json...");
     // drizzle kit needs to be this version (0.22.8) as the drizzle-kit push command fails on later versions (known bug)
     const pkgJson = {
       devDependencies: {
-        "drizzle-kit": "0.22.8",
+        "drizzle-kit": "^0.22.8",
       },
       dependencies: {
         react: "^18.2.0",
