@@ -1,7 +1,7 @@
 {
-  "name": "generator-nextjs-structure",
+  "name": "generator-nextjs-orm-app",
   "version": "1.0.0",
-  "description": "scaffold a nicely organised nextjs app",
+  "description": "scaffold a nextjs app with configured drizzle orm",
   "author": "Tony Edwards",
   "main": "index.js",
   "type": "module",
