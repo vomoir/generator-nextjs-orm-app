@@ -19,7 +19,7 @@
     "create",
     "boilerplate"
   ],
-  "repository": "github:vomoir/generator-test-component.git",
+  "repository": "github:vomoir/generator-nextjs-orm-app.git",
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.0.0",
