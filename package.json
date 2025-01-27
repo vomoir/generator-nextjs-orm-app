@@ -1,0 +1,56 @@
+{
+  "name": "generator-nextjs-orm-app",
+  "version": "1.0.0",
+  "description": "scaffold a nextjs app with configured drizzle orm",
+  "author": "Tony Edwards",
+  "main": "index.js",
+  "type": "module",
+  "module": "dist/react-lib.esm.js",
+  "jsnext:main": "dist/react-lib.esm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "yeoman-generator",
+    "yeoman",
+    "generator",
+    "inception",
+    "init",
+    "create",
+    "boilerplate"
+  ],
+  "repository": "github:vomoir/generator-nextjs-orm-app.git",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "yosay": "^2.0.2",
+    "yeoman-generator": "^7.3.2"
+  },
+  "eslintConfig": {
+    "extends": [
+      "xo-space/esnext",
+      "prettier"
+    ],
+    "env": {
+      "jest": true,
+      "node": true
+    },
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "singleQuote": true,
+          "printWidth": 90
+        }
+      ]
+    },
+    "plugins": [
+      "prettier"
+    ]
+  },
+  "devDependencies": {},
+  "bugs": {
+    "url": "https://github.com/vomoir/generator-nextjs-structure/issues"
+  },
+  "homepage": "https://github.com/vomoir/generator-nextjs-structure/#readme"
+}
