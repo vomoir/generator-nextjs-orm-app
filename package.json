@@ -2,7 +2,10 @@
   "name": "generator-nextjs-orm-app",
   "version": "1.0.0",
   "description": "scaffold a nextjs app with configured drizzle orm",
-  "author": "Tony Edwards",
+  "author": {
+    "name":"Tony Edwards",
+    "url": "https://github.com/vomoir/generator-nextjs-orm-app"
+  },
   "main": "index.js",
   "type": "module",
   "module": "dist/react-lib.esm.js",
