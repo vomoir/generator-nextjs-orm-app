@@ -53,7 +53,7 @@
   },
   "devDependencies": {},
   "bugs": {
-    "url": "https://github.com/vomoir/generator-nextjs-structure/issues"
+    "url": "https://github.com/vomoir/generator-nextjs-orm-app/issues"
   },
-  "homepage": "https://github.com/vomoir/generator-nextjs-structure"
+  "homepage": "https://github.com/vomoir/generator-nextjs-orm-app"
 }
