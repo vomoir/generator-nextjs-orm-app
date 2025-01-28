@@ -1,6 +1,6 @@
 {
   "name": "generator-nextjs-orm-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "scaffold a nextjs app with configured drizzle orm",
   "author": {
     "name":"Tony Edwards",
