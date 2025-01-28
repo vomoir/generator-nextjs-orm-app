@@ -171,6 +171,7 @@ export default class extends Generator {
     // Adding specific dependencies to package.json:
     this.log("adding dependencies to package.json...");
     // drizzle kit needs to be this version (0.22.8) as the drizzle-kit push command fails on later versions (known bug)
+    // REVISIT: using drizzle migrate instead of push which seems to work better...
     const pkgJson = {
       devDependencies: {
         "drizzle-kit": "^0.22.8",
