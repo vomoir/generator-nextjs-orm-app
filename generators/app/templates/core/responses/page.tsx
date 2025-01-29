@@ -7,7 +7,7 @@ export default async function ResponsesPage() {
 
   return (
     <div className="flex flex-col justify-center items-center border-2 gap-5 rounded-md p-6">
-      <h1 className="text-3xl font-bold text-center">App Name</h1>
+      <h1 className="text-3xl font-bold text-center"><%- appTitle %></h1>
       <h2 className="text-2xl font-bold text-center">Responses</h2>
       {resps.length > 0 ? (
         <ul className="space-y-4">

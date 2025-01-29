@@ -205,9 +205,17 @@ export default class extends Generator {
 
   end() {
     this.log("******************************************");
-    this.log(`Run the project:`);
-    this.log(`    cd ${this.answers.fullNextJsAppName}`);
+    this.log(`cd ${this.answers.fullNextJsAppName}`);
     this.log(`then...`);
+    if(!this.answers.includeInstall){
+      this.log("Install Dependencies:");
+      this.log(`    run "npm i"`);
+      this.log(`    ...then...`);
+      this.log(`    "npx drizzle-kit generate"`);
+      this.log(`    "npx drizzle-kit migrate"`);
+
+    }
+    this.log(`Run the project:`);
     this.log(`    'npm run dev'`);
     this.log("******************************************");
   }
