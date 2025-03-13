@@ -138,15 +138,22 @@ export default class extends Generator {
 
     this.fs.copyTpl(
       this.templatePath("core/components/**/*"),
-      this.destinationPath("components"),
-      { appTitle: appTitle }
+      this.answers.useSrcDir
+      ? this.destinationPath(`src/app/db`)
+      : this.destinationPath(`app/db`),
+      {
+        srcPath: srcPath,
+        appTitle: appTitle,
+      }
     );
 
     this.log("***copying drizzle/db config folders...");
 
     this.fs.copyTpl(
       this.templatePath("core/db/**/*"),
-      this.destinationPath("db"),
+      this.answers.useSrcDir
+      ? this.destinationPath(`src/app/db`)
+      : this.destinationPath(`app/db`),
       {
         srcPath: srcPath,
         appTitle: appTitle,

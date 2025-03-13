@@ -1,6 +1,7 @@
 import { db } from "@/db";
-import { ResponseItem } from "../components/response-item";
+import { ResponseItem } from "@/components/response-item";
 import { responses } from "@/db/schemas";
+import Link from "next/link";
 
 export default async function ResponsesPage() {
   const resps = await getResponses();
@@ -18,6 +19,9 @@ export default async function ResponsesPage() {
       ) : (
         <p className="text-center text-gray-500 py-4">No responses yet.</p>
       )}
+        <div className="text-center underline font-semibold text-lg">
+          <Link href="/">Home</Link>          
+        </div>
     </div>
   );
 }
