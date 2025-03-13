@@ -1,5 +1,5 @@
 import type { ResponseSelect } from "@/db/schemas";
-import { removeResponse } from "../actions";
+import { removeResponse } from "@/actions";
 
 interface ResponseItemProps {
   response: ResponseSelect;

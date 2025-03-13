@@ -1,4 +1,4 @@
-import { contactUsAction } from "../actions";
+import { contactUsAction } from "@/actions";
 
 export function ContactForm() {
   return (
